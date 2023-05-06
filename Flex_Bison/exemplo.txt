@@ -3,6 +3,11 @@ DECLARE TEAM2_SCORE AS INTEGER
 DECLARE POSSESSION AS INTEGER
 DECLARE GAME_TIME AS INTEGER
 
+FUNCTION increment_score(score)
+    score = score + 1
+    RETURN score
+ENDFUNCTION
+
 TEAM1_SCORE = 0
 TEAM2_SCORE = 0
 POSSESSION = 1
@@ -13,7 +18,7 @@ WHILE GAME_TIME < 90 DO
     
     IF POSSESSION = 1 THEN
         IF TEAM1_SCORE < 5 THEN
-            TEAM1_SCORE = TEAM1_SCORE + 1
+            TEAM1_SCORE = increment_score(TEAM1_SCORE)
             PRINT "Team 1 scores!"
         ELSE
             PRINT "Team 1 wins!"
@@ -21,7 +26,7 @@ WHILE GAME_TIME < 90 DO
         POSSESSION = 2
     ELSE
         IF TEAM2_SCORE < 5 THEN
-            TEAM2_SCORE = TEAM2_SCORE + 1
+            TEAM2_SCORE = increment_score(TEAM2_SCORE)
             PRINT "Team 2 scores!"
         ELSE
             PRINT "Team 2 wins!"

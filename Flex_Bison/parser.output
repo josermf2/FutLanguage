@@ -1,0 +1,951 @@
+Gramática
+
+    0 $accept: program $end
+
+    1 program: statements
+
+    2 statements: statement
+    3           | statements statement
+
+    4 statement: IF expression THEN statements ELSE statements ENDIF
+    5          | WHILE expression DO statements ENDWHILE
+    6          | FUNCTION IDENTIFIER LEFT_PARENTHESIS parameter_list RIGHT_PARENTHESIS statements RETURN expression ENDFUNCTION
+    7          | DECLARE IDENTIFIER AS type
+    8          | IDENTIFIER EQUAL expression
+    9          | PRINT expression
+
+   10 parameter_list: %empty
+   11               | IDENTIFIER
+   12               | parameter_list COMMA IDENTIFIER
+
+   13 expression: expression OR term
+   14           | expression AND term
+   15           | expression EQUAL term
+   16           | expression NOT_EQUAL term
+   17           | expression LESS_THAN term
+   18           | expression GREATER_THAN term
+   19           | expression LESS_THAN_OR_EQUAL term
+   20           | expression GREATER_THAN_OR_EQUAL term
+   21           | term
+
+   22 term: term PLUS factor
+   23     | term MINUS factor
+   24     | factor
+
+   25 factor: factor LEFT_PARENTHESIS expression RIGHT_PARENTHESIS
+   26       | value
+
+   27 value: NUMBER
+   28      | STRING
+   29      | IDENTIFIER
+
+   30 type: TYPE_STRING
+   31     | TYPE_INTEGER
+
+
+Terminais, com as regras onde eles aparecem
+
+    $end (0) 0
+    error (256)
+    NUMBER (258) 27
+    STRING (259) 28
+    IDENTIFIER (260) 6 7 8 11 12 29
+    IF (261) 4
+    THEN (262) 4
+    ELSE (263) 4
+    ENDIF (264) 4
+    WHILE (265) 5
+    DO (266) 5
+    ENDWHILE (267) 5
+    FUNCTION (268) 6
+    ENDFUNCTION (269) 6
+    DECLARE (270) 7
+    AS (271) 7
+    PRINT (272) 9
+    TYPE_STRING (273) 30
+    TYPE_INTEGER (274) 31
+    AND (275) 14
+    OR (276) 13
+    EQUAL (277) 8 15
+    NOT_EQUAL (278) 16
+    LESS_THAN (279) 17
+    GREATER_THAN (280) 18
+    LESS_THAN_OR_EQUAL (281) 19
+    GREATER_THAN_OR_EQUAL (282) 20
+    LEFT_PARENTHESIS (283) 6 25
+    RIGHT_PARENTHESIS (284) 6 25
+    PLUS (285) 22
+    MINUS (286) 23
+    COMMA (287) 12
+    RETURN (288) 6
+
+
+Não terminais com as regras onde eles aparecem
+
+    $accept (34)
+        à esquerda: 0
+    program (35)
+        à esquerda: 1
+        à direita: 0
+    statements (36)
+        à esquerda: 2 3
+        à direita: 1 3 4 5 6
+    statement (37)
+        à esquerda: 4 5 6 7 8 9
+        à direita: 2 3
+    parameter_list (38)
+        à esquerda: 10 11 12
+        à direita: 6 12
+    expression (39)
+        à esquerda: 13 14 15 16 17 18 19 20 21
+        à direita: 4 5 6 8 9 13 14 15 16 17 18 19 20 25
+    term (40)
+        à esquerda: 22 23 24
+        à direita: 13 14 15 16 17 18 19 20 21 22 23
+    factor (41)
+        à esquerda: 25 26
+        à direita: 22 23 24 25
+    value (42)
+        à esquerda: 27 28 29
+        à direita: 26
+    type (43)
+        à esquerda: 30 31
+        à direita: 7
+
+
+Estado 0
+
+    0 $accept: • program $end
+
+    IDENTIFIER  deslocar, e ir ao estado 1
+    IF          deslocar, e ir ao estado 2
+    WHILE       deslocar, e ir ao estado 3
+    FUNCTION    deslocar, e ir ao estado 4
+    DECLARE     deslocar, e ir ao estado 5
+    PRINT       deslocar, e ir ao estado 6
+
+    program     ir ao estado 7
+    statements  ir ao estado 8
+    statement   ir ao estado 9
+
+
+Estado 1
+
+    8 statement: IDENTIFIER • EQUAL expression
+
+    EQUAL  deslocar, e ir ao estado 10
+
+
+Estado 2
+
+    4 statement: IF • expression THEN statements ELSE statements ENDIF
+
+    NUMBER      deslocar, e ir ao estado 11
+    STRING      deslocar, e ir ao estado 12
+    IDENTIFIER  deslocar, e ir ao estado 13
+
+    expression  ir ao estado 14
+    term        ir ao estado 15
+    factor      ir ao estado 16
+    value       ir ao estado 17
+
+
+Estado 3
+
+    5 statement: WHILE • expression DO statements ENDWHILE
+
+    NUMBER      deslocar, e ir ao estado 11
+    STRING      deslocar, e ir ao estado 12
+    IDENTIFIER  deslocar, e ir ao estado 13
+
+    expression  ir ao estado 18
+    term        ir ao estado 15
+    factor      ir ao estado 16
+    value       ir ao estado 17
+
+
+Estado 4
+
+    6 statement: FUNCTION • IDENTIFIER LEFT_PARENTHESIS parameter_list RIGHT_PARENTHESIS statements RETURN expression ENDFUNCTION
+
+    IDENTIFIER  deslocar, e ir ao estado 19
+
+
+Estado 5
+
+    7 statement: DECLARE • IDENTIFIER AS type
+
+    IDENTIFIER  deslocar, e ir ao estado 20
+
+
+Estado 6
+
+    9 statement: PRINT • expression
+
+    NUMBER      deslocar, e ir ao estado 11
+    STRING      deslocar, e ir ao estado 12
+    IDENTIFIER  deslocar, e ir ao estado 13
+
+    expression  ir ao estado 21
+    term        ir ao estado 15
+    factor      ir ao estado 16
+    value       ir ao estado 17
+
+
+Estado 7
+
+    0 $accept: program • $end
+
+    $end  deslocar, e ir ao estado 22
+
+
+Estado 8
+
+    1 program: statements •
+    3 statements: statements • statement
+
+    IDENTIFIER  deslocar, e ir ao estado 1
+    IF          deslocar, e ir ao estado 2
+    WHILE       deslocar, e ir ao estado 3
+    FUNCTION    deslocar, e ir ao estado 4
+    DECLARE     deslocar, e ir ao estado 5
+    PRINT       deslocar, e ir ao estado 6
+
+    $padrão  reduzir usando a regra 1 (program)
+
+    statement  ir ao estado 23
+
+
+Estado 9
+
+    2 statements: statement •
+
+    $padrão  reduzir usando a regra 2 (statements)
+
+
+Estado 10
+
+    8 statement: IDENTIFIER EQUAL • expression
+
+    NUMBER      deslocar, e ir ao estado 11
+    STRING      deslocar, e ir ao estado 12
+    IDENTIFIER  deslocar, e ir ao estado 13
+
+    expression  ir ao estado 24
+    term        ir ao estado 15
+    factor      ir ao estado 16
+    value       ir ao estado 17
+
+
+Estado 11
+
+   27 value: NUMBER •
+
+    $padrão  reduzir usando a regra 27 (value)
+
+
+Estado 12
+
+   28 value: STRING •
+
+    $padrão  reduzir usando a regra 28 (value)
+
+
+Estado 13
+
+   29 value: IDENTIFIER •
+
+    $padrão  reduzir usando a regra 29 (value)
+
+
+Estado 14
+
+    4 statement: IF expression • THEN statements ELSE statements ENDIF
+   13 expression: expression • OR term
+   14           | expression • AND term
+   15           | expression • EQUAL term
+   16           | expression • NOT_EQUAL term
+   17           | expression • LESS_THAN term
+   18           | expression • GREATER_THAN term
+   19           | expression • LESS_THAN_OR_EQUAL term
+   20           | expression • GREATER_THAN_OR_EQUAL term
+
+    THEN                   deslocar, e ir ao estado 25
+    AND                    deslocar, e ir ao estado 26
+    OR                     deslocar, e ir ao estado 27
+    EQUAL                  deslocar, e ir ao estado 28
+    NOT_EQUAL              deslocar, e ir ao estado 29
+    LESS_THAN              deslocar, e ir ao estado 30
+    GREATER_THAN           deslocar, e ir ao estado 31
+    LESS_THAN_OR_EQUAL     deslocar, e ir ao estado 32
+    GREATER_THAN_OR_EQUAL  deslocar, e ir ao estado 33
+
+
+Estado 15
+
+   21 expression: term •
+   22 term: term • PLUS factor
+   23     | term • MINUS factor
+
+    PLUS   deslocar, e ir ao estado 34
+    MINUS  deslocar, e ir ao estado 35
+
+    $padrão  reduzir usando a regra 21 (expression)
+
+
+Estado 16
+
+   24 term: factor •
+   25 factor: factor • LEFT_PARENTHESIS expression RIGHT_PARENTHESIS
+
+    LEFT_PARENTHESIS  deslocar, e ir ao estado 36
+
+    $padrão  reduzir usando a regra 24 (term)
+
+
+Estado 17
+
+   26 factor: value •
+
+    $padrão  reduzir usando a regra 26 (factor)
+
+
+Estado 18
+
+    5 statement: WHILE expression • DO statements ENDWHILE
+   13 expression: expression • OR term
+   14           | expression • AND term
+   15           | expression • EQUAL term
+   16           | expression • NOT_EQUAL term
+   17           | expression • LESS_THAN term
+   18           | expression • GREATER_THAN term
+   19           | expression • LESS_THAN_OR_EQUAL term
+   20           | expression • GREATER_THAN_OR_EQUAL term
+
+    DO                     deslocar, e ir ao estado 37
+    AND                    deslocar, e ir ao estado 26
+    OR                     deslocar, e ir ao estado 27
+    EQUAL                  deslocar, e ir ao estado 28
+    NOT_EQUAL              deslocar, e ir ao estado 29
+    LESS_THAN              deslocar, e ir ao estado 30
+    GREATER_THAN           deslocar, e ir ao estado 31
+    LESS_THAN_OR_EQUAL     deslocar, e ir ao estado 32
+    GREATER_THAN_OR_EQUAL  deslocar, e ir ao estado 33
+
+
+Estado 19
+
+    6 statement: FUNCTION IDENTIFIER • LEFT_PARENTHESIS parameter_list RIGHT_PARENTHESIS statements RETURN expression ENDFUNCTION
+
+    LEFT_PARENTHESIS  deslocar, e ir ao estado 38
+
+
+Estado 20
+
+    7 statement: DECLARE IDENTIFIER • AS type
+
+    AS  deslocar, e ir ao estado 39
+
+
+Estado 21
+
+    9 statement: PRINT expression •
+   13 expression: expression • OR term
+   14           | expression • AND term
+   15           | expression • EQUAL term
+   16           | expression • NOT_EQUAL term
+   17           | expression • LESS_THAN term
+   18           | expression • GREATER_THAN term
+   19           | expression • LESS_THAN_OR_EQUAL term
+   20           | expression • GREATER_THAN_OR_EQUAL term
+
+    AND                    deslocar, e ir ao estado 26
+    OR                     deslocar, e ir ao estado 27
+    EQUAL                  deslocar, e ir ao estado 28
+    NOT_EQUAL              deslocar, e ir ao estado 29
+    LESS_THAN              deslocar, e ir ao estado 30
+    GREATER_THAN           deslocar, e ir ao estado 31
+    LESS_THAN_OR_EQUAL     deslocar, e ir ao estado 32
+    GREATER_THAN_OR_EQUAL  deslocar, e ir ao estado 33
+
+    $padrão  reduzir usando a regra 9 (statement)
+
+
+Estado 22
+
+    0 $accept: program $end •
+
+    $padrão  aceitar
+
+
+Estado 23
+
+    3 statements: statements statement •
+
+    $padrão  reduzir usando a regra 3 (statements)
+
+
+Estado 24
+
+    8 statement: IDENTIFIER EQUAL expression •
+   13 expression: expression • OR term
+   14           | expression • AND term
+   15           | expression • EQUAL term
+   16           | expression • NOT_EQUAL term
+   17           | expression • LESS_THAN term
+   18           | expression • GREATER_THAN term
+   19           | expression • LESS_THAN_OR_EQUAL term
+   20           | expression • GREATER_THAN_OR_EQUAL term
+
+    AND                    deslocar, e ir ao estado 26
+    OR                     deslocar, e ir ao estado 27
+    EQUAL                  deslocar, e ir ao estado 28
+    NOT_EQUAL              deslocar, e ir ao estado 29
+    LESS_THAN              deslocar, e ir ao estado 30
+    GREATER_THAN           deslocar, e ir ao estado 31
+    LESS_THAN_OR_EQUAL     deslocar, e ir ao estado 32
+    GREATER_THAN_OR_EQUAL  deslocar, e ir ao estado 33
+
+    $padrão  reduzir usando a regra 8 (statement)
+
+
+Estado 25
+
+    4 statement: IF expression THEN • statements ELSE statements ENDIF
+
+    IDENTIFIER  deslocar, e ir ao estado 1
+    IF          deslocar, e ir ao estado 2
+    WHILE       deslocar, e ir ao estado 3
+    FUNCTION    deslocar, e ir ao estado 4
+    DECLARE     deslocar, e ir ao estado 5
+    PRINT       deslocar, e ir ao estado 6
+
+    statements  ir ao estado 40
+    statement   ir ao estado 9
+
+
+Estado 26
+
+   14 expression: expression AND • term
+
+    NUMBER      deslocar, e ir ao estado 11
+    STRING      deslocar, e ir ao estado 12
+    IDENTIFIER  deslocar, e ir ao estado 13
+
+    term    ir ao estado 41
+    factor  ir ao estado 16
+    value   ir ao estado 17
+
+
+Estado 27
+
+   13 expression: expression OR • term
+
+    NUMBER      deslocar, e ir ao estado 11
+    STRING      deslocar, e ir ao estado 12
+    IDENTIFIER  deslocar, e ir ao estado 13
+
+    term    ir ao estado 42
+    factor  ir ao estado 16
+    value   ir ao estado 17
+
+
+Estado 28
+
+   15 expression: expression EQUAL • term
+
+    NUMBER      deslocar, e ir ao estado 11
+    STRING      deslocar, e ir ao estado 12
+    IDENTIFIER  deslocar, e ir ao estado 13
+
+    term    ir ao estado 43
+    factor  ir ao estado 16
+    value   ir ao estado 17
+
+
+Estado 29
+
+   16 expression: expression NOT_EQUAL • term
+
+    NUMBER      deslocar, e ir ao estado 11
+    STRING      deslocar, e ir ao estado 12
+    IDENTIFIER  deslocar, e ir ao estado 13
+
+    term    ir ao estado 44
+    factor  ir ao estado 16
+    value   ir ao estado 17
+
+
+Estado 30
+
+   17 expression: expression LESS_THAN • term
+
+    NUMBER      deslocar, e ir ao estado 11
+    STRING      deslocar, e ir ao estado 12
+    IDENTIFIER  deslocar, e ir ao estado 13
+
+    term    ir ao estado 45
+    factor  ir ao estado 16
+    value   ir ao estado 17
+
+
+Estado 31
+
+   18 expression: expression GREATER_THAN • term
+
+    NUMBER      deslocar, e ir ao estado 11
+    STRING      deslocar, e ir ao estado 12
+    IDENTIFIER  deslocar, e ir ao estado 13
+
+    term    ir ao estado 46
+    factor  ir ao estado 16
+    value   ir ao estado 17
+
+
+Estado 32
+
+   19 expression: expression LESS_THAN_OR_EQUAL • term
+
+    NUMBER      deslocar, e ir ao estado 11
+    STRING      deslocar, e ir ao estado 12
+    IDENTIFIER  deslocar, e ir ao estado 13
+
+    term    ir ao estado 47
+    factor  ir ao estado 16
+    value   ir ao estado 17
+
+
+Estado 33
+
+   20 expression: expression GREATER_THAN_OR_EQUAL • term
+
+    NUMBER      deslocar, e ir ao estado 11
+    STRING      deslocar, e ir ao estado 12
+    IDENTIFIER  deslocar, e ir ao estado 13
+
+    term    ir ao estado 48
+    factor  ir ao estado 16
+    value   ir ao estado 17
+
+
+Estado 34
+
+   22 term: term PLUS • factor
+
+    NUMBER      deslocar, e ir ao estado 11
+    STRING      deslocar, e ir ao estado 12
+    IDENTIFIER  deslocar, e ir ao estado 13
+
+    factor  ir ao estado 49
+    value   ir ao estado 17
+
+
+Estado 35
+
+   23 term: term MINUS • factor
+
+    NUMBER      deslocar, e ir ao estado 11
+    STRING      deslocar, e ir ao estado 12
+    IDENTIFIER  deslocar, e ir ao estado 13
+
+    factor  ir ao estado 50
+    value   ir ao estado 17
+
+
+Estado 36
+
+   25 factor: factor LEFT_PARENTHESIS • expression RIGHT_PARENTHESIS
+
+    NUMBER      deslocar, e ir ao estado 11
+    STRING      deslocar, e ir ao estado 12
+    IDENTIFIER  deslocar, e ir ao estado 13
+
+    expression  ir ao estado 51
+    term        ir ao estado 15
+    factor      ir ao estado 16
+    value       ir ao estado 17
+
+
+Estado 37
+
+    5 statement: WHILE expression DO • statements ENDWHILE
+
+    IDENTIFIER  deslocar, e ir ao estado 1
+    IF          deslocar, e ir ao estado 2
+    WHILE       deslocar, e ir ao estado 3
+    FUNCTION    deslocar, e ir ao estado 4
+    DECLARE     deslocar, e ir ao estado 5
+    PRINT       deslocar, e ir ao estado 6
+
+    statements  ir ao estado 52
+    statement   ir ao estado 9
+
+
+Estado 38
+
+    6 statement: FUNCTION IDENTIFIER LEFT_PARENTHESIS • parameter_list RIGHT_PARENTHESIS statements RETURN expression ENDFUNCTION
+
+    IDENTIFIER  deslocar, e ir ao estado 53
+
+    $padrão  reduzir usando a regra 10 (parameter_list)
+
+    parameter_list  ir ao estado 54
+
+
+Estado 39
+
+    7 statement: DECLARE IDENTIFIER AS • type
+
+    TYPE_STRING   deslocar, e ir ao estado 55
+    TYPE_INTEGER  deslocar, e ir ao estado 56
+
+    type  ir ao estado 57
+
+
+Estado 40
+
+    3 statements: statements • statement
+    4 statement: IF expression THEN statements • ELSE statements ENDIF
+
+    IDENTIFIER  deslocar, e ir ao estado 1
+    IF          deslocar, e ir ao estado 2
+    ELSE        deslocar, e ir ao estado 58
+    WHILE       deslocar, e ir ao estado 3
+    FUNCTION    deslocar, e ir ao estado 4
+    DECLARE     deslocar, e ir ao estado 5
+    PRINT       deslocar, e ir ao estado 6
+
+    statement  ir ao estado 23
+
+
+Estado 41
+
+   14 expression: expression AND term •
+   22 term: term • PLUS factor
+   23     | term • MINUS factor
+
+    PLUS   deslocar, e ir ao estado 34
+    MINUS  deslocar, e ir ao estado 35
+
+    $padrão  reduzir usando a regra 14 (expression)
+
+
+Estado 42
+
+   13 expression: expression OR term •
+   22 term: term • PLUS factor
+   23     | term • MINUS factor
+
+    PLUS   deslocar, e ir ao estado 34
+    MINUS  deslocar, e ir ao estado 35
+
+    $padrão  reduzir usando a regra 13 (expression)
+
+
+Estado 43
+
+   15 expression: expression EQUAL term •
+   22 term: term • PLUS factor
+   23     | term • MINUS factor
+
+    PLUS   deslocar, e ir ao estado 34
+    MINUS  deslocar, e ir ao estado 35
+
+    $padrão  reduzir usando a regra 15 (expression)
+
+
+Estado 44
+
+   16 expression: expression NOT_EQUAL term •
+   22 term: term • PLUS factor
+   23     | term • MINUS factor
+
+    PLUS   deslocar, e ir ao estado 34
+    MINUS  deslocar, e ir ao estado 35
+
+    $padrão  reduzir usando a regra 16 (expression)
+
+
+Estado 45
+
+   17 expression: expression LESS_THAN term •
+   22 term: term • PLUS factor
+   23     | term • MINUS factor
+
+    PLUS   deslocar, e ir ao estado 34
+    MINUS  deslocar, e ir ao estado 35
+
+    $padrão  reduzir usando a regra 17 (expression)
+
+
+Estado 46
+
+   18 expression: expression GREATER_THAN term •
+   22 term: term • PLUS factor
+   23     | term • MINUS factor
+
+    PLUS   deslocar, e ir ao estado 34
+    MINUS  deslocar, e ir ao estado 35
+
+    $padrão  reduzir usando a regra 18 (expression)
+
+
+Estado 47
+
+   19 expression: expression LESS_THAN_OR_EQUAL term •
+   22 term: term • PLUS factor
+   23     | term • MINUS factor
+
+    PLUS   deslocar, e ir ao estado 34
+    MINUS  deslocar, e ir ao estado 35
+
+    $padrão  reduzir usando a regra 19 (expression)
+
+
+Estado 48
+
+   20 expression: expression GREATER_THAN_OR_EQUAL term •
+   22 term: term • PLUS factor
+   23     | term • MINUS factor
+
+    PLUS   deslocar, e ir ao estado 34
+    MINUS  deslocar, e ir ao estado 35
+
+    $padrão  reduzir usando a regra 20 (expression)
+
+
+Estado 49
+
+   22 term: term PLUS factor •
+   25 factor: factor • LEFT_PARENTHESIS expression RIGHT_PARENTHESIS
+
+    LEFT_PARENTHESIS  deslocar, e ir ao estado 36
+
+    $padrão  reduzir usando a regra 22 (term)
+
+
+Estado 50
+
+   23 term: term MINUS factor •
+   25 factor: factor • LEFT_PARENTHESIS expression RIGHT_PARENTHESIS
+
+    LEFT_PARENTHESIS  deslocar, e ir ao estado 36
+
+    $padrão  reduzir usando a regra 23 (term)
+
+
+Estado 51
+
+   13 expression: expression • OR term
+   14           | expression • AND term
+   15           | expression • EQUAL term
+   16           | expression • NOT_EQUAL term
+   17           | expression • LESS_THAN term
+   18           | expression • GREATER_THAN term
+   19           | expression • LESS_THAN_OR_EQUAL term
+   20           | expression • GREATER_THAN_OR_EQUAL term
+   25 factor: factor LEFT_PARENTHESIS expression • RIGHT_PARENTHESIS
+
+    AND                    deslocar, e ir ao estado 26
+    OR                     deslocar, e ir ao estado 27
+    EQUAL                  deslocar, e ir ao estado 28
+    NOT_EQUAL              deslocar, e ir ao estado 29
+    LESS_THAN              deslocar, e ir ao estado 30
+    GREATER_THAN           deslocar, e ir ao estado 31
+    LESS_THAN_OR_EQUAL     deslocar, e ir ao estado 32
+    GREATER_THAN_OR_EQUAL  deslocar, e ir ao estado 33
+    RIGHT_PARENTHESIS      deslocar, e ir ao estado 59
+
+
+Estado 52
+
+    3 statements: statements • statement
+    5 statement: WHILE expression DO statements • ENDWHILE
+
+    IDENTIFIER  deslocar, e ir ao estado 1
+    IF          deslocar, e ir ao estado 2
+    WHILE       deslocar, e ir ao estado 3
+    ENDWHILE    deslocar, e ir ao estado 60
+    FUNCTION    deslocar, e ir ao estado 4
+    DECLARE     deslocar, e ir ao estado 5
+    PRINT       deslocar, e ir ao estado 6
+
+    statement  ir ao estado 23
+
+
+Estado 53
+
+   11 parameter_list: IDENTIFIER •
+
+    $padrão  reduzir usando a regra 11 (parameter_list)
+
+
+Estado 54
+
+    6 statement: FUNCTION IDENTIFIER LEFT_PARENTHESIS parameter_list • RIGHT_PARENTHESIS statements RETURN expression ENDFUNCTION
+   12 parameter_list: parameter_list • COMMA IDENTIFIER
+
+    RIGHT_PARENTHESIS  deslocar, e ir ao estado 61
+    COMMA              deslocar, e ir ao estado 62
+
+
+Estado 55
+
+   30 type: TYPE_STRING •
+
+    $padrão  reduzir usando a regra 30 (type)
+
+
+Estado 56
+
+   31 type: TYPE_INTEGER •
+
+    $padrão  reduzir usando a regra 31 (type)
+
+
+Estado 57
+
+    7 statement: DECLARE IDENTIFIER AS type •
+
+    $padrão  reduzir usando a regra 7 (statement)
+
+
+Estado 58
+
+    4 statement: IF expression THEN statements ELSE • statements ENDIF
+
+    IDENTIFIER  deslocar, e ir ao estado 1
+    IF          deslocar, e ir ao estado 2
+    WHILE       deslocar, e ir ao estado 3
+    FUNCTION    deslocar, e ir ao estado 4
+    DECLARE     deslocar, e ir ao estado 5
+    PRINT       deslocar, e ir ao estado 6
+
+    statements  ir ao estado 63
+    statement   ir ao estado 9
+
+
+Estado 59
+
+   25 factor: factor LEFT_PARENTHESIS expression RIGHT_PARENTHESIS •
+
+    $padrão  reduzir usando a regra 25 (factor)
+
+
+Estado 60
+
+    5 statement: WHILE expression DO statements ENDWHILE •
+
+    $padrão  reduzir usando a regra 5 (statement)
+
+
+Estado 61
+
+    6 statement: FUNCTION IDENTIFIER LEFT_PARENTHESIS parameter_list RIGHT_PARENTHESIS • statements RETURN expression ENDFUNCTION
+
+    IDENTIFIER  deslocar, e ir ao estado 1
+    IF          deslocar, e ir ao estado 2
+    WHILE       deslocar, e ir ao estado 3
+    FUNCTION    deslocar, e ir ao estado 4
+    DECLARE     deslocar, e ir ao estado 5
+    PRINT       deslocar, e ir ao estado 6
+
+    statements  ir ao estado 64
+    statement   ir ao estado 9
+
+
+Estado 62
+
+   12 parameter_list: parameter_list COMMA • IDENTIFIER
+
+    IDENTIFIER  deslocar, e ir ao estado 65
+
+
+Estado 63
+
+    3 statements: statements • statement
+    4 statement: IF expression THEN statements ELSE statements • ENDIF
+
+    IDENTIFIER  deslocar, e ir ao estado 1
+    IF          deslocar, e ir ao estado 2
+    ENDIF       deslocar, e ir ao estado 66
+    WHILE       deslocar, e ir ao estado 3
+    FUNCTION    deslocar, e ir ao estado 4
+    DECLARE     deslocar, e ir ao estado 5
+    PRINT       deslocar, e ir ao estado 6
+
+    statement  ir ao estado 23
+
+
+Estado 64
+
+    3 statements: statements • statement
+    6 statement: FUNCTION IDENTIFIER LEFT_PARENTHESIS parameter_list RIGHT_PARENTHESIS statements • RETURN expression ENDFUNCTION
+
+    IDENTIFIER  deslocar, e ir ao estado 1
+    IF          deslocar, e ir ao estado 2
+    WHILE       deslocar, e ir ao estado 3
+    FUNCTION    deslocar, e ir ao estado 4
+    DECLARE     deslocar, e ir ao estado 5
+    PRINT       deslocar, e ir ao estado 6
+    RETURN      deslocar, e ir ao estado 67
+
+    statement  ir ao estado 23
+
+
+Estado 65
+
+   12 parameter_list: parameter_list COMMA IDENTIFIER •
+
+    $padrão  reduzir usando a regra 12 (parameter_list)
+
+
+Estado 66
+
+    4 statement: IF expression THEN statements ELSE statements ENDIF •
+
+    $padrão  reduzir usando a regra 4 (statement)
+
+
+Estado 67
+
+    6 statement: FUNCTION IDENTIFIER LEFT_PARENTHESIS parameter_list RIGHT_PARENTHESIS statements RETURN • expression ENDFUNCTION
+
+    NUMBER      deslocar, e ir ao estado 11
+    STRING      deslocar, e ir ao estado 12
+    IDENTIFIER  deslocar, e ir ao estado 13
+
+    expression  ir ao estado 68
+    term        ir ao estado 15
+    factor      ir ao estado 16
+    value       ir ao estado 17
+
+
+Estado 68
+
+    6 statement: FUNCTION IDENTIFIER LEFT_PARENTHESIS parameter_list RIGHT_PARENTHESIS statements RETURN expression • ENDFUNCTION
+   13 expression: expression • OR term
+   14           | expression • AND term
+   15           | expression • EQUAL term
+   16           | expression • NOT_EQUAL term
+   17           | expression • LESS_THAN term
+   18           | expression • GREATER_THAN term
+   19           | expression • LESS_THAN_OR_EQUAL term
+   20           | expression • GREATER_THAN_OR_EQUAL term
+
+    ENDFUNCTION            deslocar, e ir ao estado 69
+    AND                    deslocar, e ir ao estado 26
+    OR                     deslocar, e ir ao estado 27
+    EQUAL                  deslocar, e ir ao estado 28
+    NOT_EQUAL              deslocar, e ir ao estado 29
+    LESS_THAN              deslocar, e ir ao estado 30
+    GREATER_THAN           deslocar, e ir ao estado 31
+    LESS_THAN_OR_EQUAL     deslocar, e ir ao estado 32
+    GREATER_THAN_OR_EQUAL  deslocar, e ir ao estado 33
+
+
+Estado 69
+
+    6 statement: FUNCTION IDENTIFIER LEFT_PARENTHESIS parameter_list RIGHT_PARENTHESIS statements RETURN expression ENDFUNCTION •
+
+    $padrão  reduzir usando a regra 6 (statement)

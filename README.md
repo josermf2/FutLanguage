@@ -64,6 +64,11 @@ DECLARE TEAM2_SCORE AS INTEGER
 DECLARE POSSESSION AS INTEGER
 DECLARE GAME_TIME AS INTEGER
 
+FUNCTION increment_score(score)
+    score = score + 1
+    RETURN score
+ENDFUNCTION
+
 TEAM1_SCORE = 0
 TEAM2_SCORE = 0
 POSSESSION = 1
@@ -74,7 +79,7 @@ WHILE GAME_TIME < 90 DO
     
     IF POSSESSION = 1 THEN
         IF TEAM1_SCORE < 5 THEN
-            TEAM1_SCORE = TEAM1_SCORE + 1
+            TEAM1_SCORE = increment_score(TEAM1_SCORE)
             PRINT "Team 1 scores!"
         ELSE
             PRINT "Team 1 wins!"
@@ -82,7 +87,7 @@ WHILE GAME_TIME < 90 DO
         POSSESSION = 2
     ELSE
         IF TEAM2_SCORE < 5 THEN
-            TEAM2_SCORE = TEAM2_SCORE + 1
+            TEAM2_SCORE = increment_score(TEAM2_SCORE)
             PRINT "Team 2 scores!"
         ELSE
             PRINT "Team 2 wins!"
@@ -93,9 +98,20 @@ ENDWHILE
 
 IF TEAM1_SCORE > TEAM2_SCORE THEN
     PRINT "Team 1 wins!"
-ELSE IF TEAM2_SCORE > TEAM1_SCORE THEN
-    PRINT "Team 2 wins!"
 ELSE
     PRINT "It's a draw!"
 ENDIF
+```
+
+## Flex e Bison
+Para fazer a análise sintática e léxica da linguagem, foram utilizados o Flex e o Bison.
+
+Para compilar o programa, é necessário ter o Flex e o Bison instalados. Assim, para fazer as análises, basta rodar os seguintes comandos no terminal:
+
+``` lua
+cd Flex_Bison
+flex -l fut.l
+bison -dv parser.y
+gcc -o analyzer parser.tab.c lex.yy.c -lfl
+./analyzer < exemplo.txt
 ```
