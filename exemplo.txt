@@ -1,0 +1,37 @@
+DECLARE TEAM1_SCORE AS INTEGER
+DECLARE TEAM2_SCORE AS INTEGER
+DECLARE POSSESSION AS INTEGER
+DECLARE GAME_TIME AS INTEGER
+
+TEAM1_SCORE = 0
+TEAM2_SCORE = 0
+POSSESSION = 1
+GAME_TIME = 0
+
+WHILE GAME_TIME < 90 DO
+    GAME_TIME = GAME_TIME + 1
+    
+    IF POSSESSION = 1 THEN
+        IF TEAM1_SCORE < 5 THEN
+            TEAM1_SCORE = TEAM1_SCORE + 1
+            PRINT "Team 1 scores!"
+        ELSE
+            PRINT "Team 1 wins!"
+        ENDIF
+        POSSESSION = 2
+    ELSE
+        IF TEAM2_SCORE < 5 THEN
+            TEAM2_SCORE = TEAM2_SCORE + 1
+            PRINT "Team 2 scores!"
+        ELSE
+            PRINT "Team 2 wins!"
+        ENDIF
+        POSSESSION = 1
+    ENDIF
+ENDWHILE
+
+IF TEAM1_SCORE > TEAM2_SCORE THEN
+    PRINT "Team 1 wins!"
+ELSE
+    PRINT "It's a draw!"
+ENDIF
