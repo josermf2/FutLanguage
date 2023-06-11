@@ -14,17 +14,15 @@ STATEMENT_LIST = STATEMENT | STATEMENT STATEMENT_LIST ;
 
 STATEMENT = ASSIGNMENT | CONDITIONAL | LOOP | FUNCTION | VARIABLE_DECLARATION | PRINT_STATEMENT ;
 
-ASSIGNMENT = VARIABLE "=" EXPRESSION ;
-
-VARIABLE = "TEAM1_SCORE" | "TEAM2_SCORE" | "POSSESSION" | "GAME_TIME" | "TEAM1_PLAYER1" | "TEAM1_PLAYER2" | "TEAM1_PLAYER3" | "TEAM1_PLAYER4" | "TEAM1_PLAYER5" | "TEAM1_PLAYER6" | "TEAM1_PLAYER7" | "TEAM1_PLAYER8" | "TEAM1_PLAYER9" | "TEAM1_PLAYER10" | "TEAM1_PLAYER11" | "TEAM2_PLAYER1" | "TEAM2_PLAYER2" | "TEAM2_PLAYER3" | "TEAM2_PLAYER4" | "TEAM2_PLAYER5" | "TEAM2_PLAYER6" | "TEAM2_PLAYER7" | "TEAM2_PLAYER8" | "TEAM2_PLAYER9" | "TEAM2_PLAYER10" | "TEAM2_PLAYER11" | IDENTIFIER ;
+ASSIGNMENT = IDENTIFIER "=" EXPRESSION ;
 
 CONDITIONAL = "IF" EXPRESSION "THEN" STATEMENT_LIST "ELSE" STATEMENT_LIST "ENDIF" ;
 
 LOOP = "WHILE" EXPRESSION "DO" STATEMENT_LIST "ENDWHILE" ;
 
-FUNCTION = "FUNCTION" VARIABLE "(" [PARAMETER_LIST] ")" STATEMENT_LIST "RETURN" EXPRESSION "ENDFUNCTION" ;
+FUNCTION = "FUNCTION" IDENTIFIER "(" [PARAMETER_LIST] ")" STATEMENT_LIST "RETURN" EXPRESSION "ENDFUNCTION" ;
 
-PARAMETER_LIST = IDENTIFIER | IDENTIFIER "," PARAMETER_LIST ;
+PARAMETER_LIST = IDENTIFIER "AS" TYPE | IDENTIFIER  "AS" TYPE "," PARAMETER_LIST ;
 
 VARIABLE_DECLARATION = "DECLARE" IDENTIFIER "AS" TYPE ;
 
@@ -38,7 +36,7 @@ EXPRESSION = COMPARISON | COMPARISON LOGICAL_OPERATOR COMPARISON | NUMBER ADDITI
 
 COMPARISON = TERM | TERM COMPARISON_OPERATOR TERM ;
 
-TERM = VARIABLE | NUMBER | STRING | "(" EXPRESSION ")" ;
+TERM = IDENTIFIER | NUMBER | STRING | "(" EXPRESSION ")" ;
 
 LOGICAL_OPERATOR = "AND" | "OR" ;
 
@@ -64,7 +62,7 @@ DECLARE TEAM2_SCORE AS INTEGER
 DECLARE POSSESSION AS INTEGER
 DECLARE GAME_TIME AS INTEGER
 
-FUNCTION increment_score(score)
+FUNCTION increment_score(score AS INTEGER)
     score = score + 1
     RETURN score
 ENDFUNCTION
@@ -77,20 +75,16 @@ GAME_TIME = 0
 WHILE GAME_TIME < 90 DO
     GAME_TIME = GAME_TIME + 1
     
-    IF POSSESSION = 1 THEN
+    IF POSSESSION == 1 THEN
         IF TEAM1_SCORE < 5 THEN
             TEAM1_SCORE = increment_score(TEAM1_SCORE)
-            PRINT "Team 1 scores!"
-        ELSE
-            PRINT "Team 1 wins!"
+            PRINT "Team 1 scores!"            
         ENDIF
         POSSESSION = 2
     ELSE
-        IF TEAM2_SCORE < 5 THEN
+        IF TEAM2_SCORE < 4 THEN
             TEAM2_SCORE = increment_score(TEAM2_SCORE)
             PRINT "Team 2 scores!"
-        ELSE
-            PRINT "Team 2 wins!"
         ENDIF
         POSSESSION = 1
     ENDIF
@@ -98,7 +92,13 @@ ENDWHILE
 
 IF TEAM1_SCORE > TEAM2_SCORE THEN
     PRINT "Team 1 wins!"
+    PRINT TEAM1_SCORE
 ELSE
+    PRINT "Team 2 wins!"
+    PRINT TEAM2_SCORE
+ENDIF
+
+IF TEAM1_SCORE == TEAM2_SCORE THEN
     PRINT "It's a draw!"
 ENDIF
 ```
@@ -108,10 +108,18 @@ Para fazer a análise sintática e léxica da linguagem, foram utilizados o Flex
 
 Para compilar o programa, é necessário ter o Flex e o Bison instalados. Assim, para fazer as análises, basta rodar os seguintes comandos no terminal:
 
-``` lua
+``` bash
 cd Flex_Bison
 flex -l fut.l
 bison -dv parser.y
 gcc -o analyzer parser.tab.c lex.yy.c -lfl
-./analyzer < exemplo.txt
+./analyzer < ../example.fut
+```
+
+## Compilador
+O compilador da FUT Language utiliza como base o compilador desenvolvido na disciplina para julia. Ele faz todas as etapas de análise (léxica, sintática e semântica) e imprime o resultado do programa do terminal. 
+
+Para compilar o programa de testes é necessário ter o python instalado. Para rodar, utilize o senguinte comando no terminal:
+```bash
+python3 compilator.py example.fut
 ```
