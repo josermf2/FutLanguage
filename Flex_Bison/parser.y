@@ -7,7 +7,7 @@ extern int yylex();
 void yyerror(const char *s) { printf("ERROR: %s\n", s); }
 %}
 
-%token NUMBER STRING IDENTIFIER IF THEN ELSE ENDIF WHILE DO ENDWHILE FUNCTION ENDFUNCTION DECLARE AS PRINT TYPE_STRING TYPE_INTEGER AND OR EQUAL NOT_EQUAL LESS_THAN GREATER_THAN LESS_THAN_OR_EQUAL GREATER_THAN_OR_EQUAL LEFT_PARENTHESIS RIGHT_PARENTHESIS PLUS MINUS COMMA RETURN
+%token NUMBER STRING IDENTIFIER IF THEN ELSE ENDIF WHILE DO ENDWHILE FUNCTION ENDFUNCTION DECLARE AS PRINT TYPE_STRING TYPE_INTEGER AND OR EQUAL COMP_EQUAL NOT_EQUAL LESS_THAN GREATER_THAN LESS_THAN_OR_EQUAL GREATER_THAN_OR_EQUAL LEFT_PARENTHESIS RIGHT_PARENTHESIS PLUS MINUS COMMA RETURN
 
 %start program
 
@@ -23,6 +23,7 @@ statements:
 
 statement:
     IF expression THEN statements ELSE statements ENDIF
+    | IF expression THEN statements ENDIF
     | WHILE expression DO statements ENDWHILE
     | FUNCTION IDENTIFIER LEFT_PARENTHESIS parameter_list RIGHT_PARENTHESIS statements RETURN expression ENDFUNCTION
     | DECLARE IDENTIFIER AS type
@@ -31,8 +32,7 @@ statement:
     ;
 
 parameter_list:
-    /* empty */
-    | IDENTIFIER
+    | IDENTIFIER AS type
     | parameter_list COMMA IDENTIFIER
     ;
 
@@ -41,6 +41,7 @@ expression:
     expression OR term
     | expression AND term
     | expression EQUAL term
+    | expression COMP_EQUAL term
     | expression NOT_EQUAL term
     | expression LESS_THAN term
     | expression GREATER_THAN term

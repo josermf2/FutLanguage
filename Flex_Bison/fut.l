@@ -29,6 +29,7 @@ VARIABLES TEAM1_SCORE|TEAM2_SCORE|POSSESSION|GAME_TIME|TEAM1_PLAYER1|TEAM1_PLAYE
 "AND" { printf("AND\n"); return AND; }
 "OR" { printf("OR\n"); return OR; }
 "=" { printf("EQUAL\n"); return EQUAL; }
+"==" { printf("COMP_EQUAL\n"); return COMP_EQUAL; }
 "<>" { printf("NOT EQUAL\n"); return NOT_EQUAL; }
 "<" { printf("LESS THAN\n"); return LESS_THAN; }
 ">" { printf("GREATER THAN\n"); return GREATER_THAN; }

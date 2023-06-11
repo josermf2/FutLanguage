@@ -74,17 +74,18 @@ extern int yydebug;
     AND = 275,                     /* AND  */
     OR = 276,                      /* OR  */
     EQUAL = 277,                   /* EQUAL  */
-    NOT_EQUAL = 278,               /* NOT_EQUAL  */
-    LESS_THAN = 279,               /* LESS_THAN  */
-    GREATER_THAN = 280,            /* GREATER_THAN  */
-    LESS_THAN_OR_EQUAL = 281,      /* LESS_THAN_OR_EQUAL  */
-    GREATER_THAN_OR_EQUAL = 282,   /* GREATER_THAN_OR_EQUAL  */
-    LEFT_PARENTHESIS = 283,        /* LEFT_PARENTHESIS  */
-    RIGHT_PARENTHESIS = 284,       /* RIGHT_PARENTHESIS  */
-    PLUS = 285,                    /* PLUS  */
-    MINUS = 286,                   /* MINUS  */
-    COMMA = 287,                   /* COMMA  */
-    RETURN = 288                   /* RETURN  */
+    COMP_EQUAL = 278,              /* COMP_EQUAL  */
+    NOT_EQUAL = 279,               /* NOT_EQUAL  */
+    LESS_THAN = 280,               /* LESS_THAN  */
+    GREATER_THAN = 281,            /* GREATER_THAN  */
+    LESS_THAN_OR_EQUAL = 282,      /* LESS_THAN_OR_EQUAL  */
+    GREATER_THAN_OR_EQUAL = 283,   /* GREATER_THAN_OR_EQUAL  */
+    LEFT_PARENTHESIS = 284,        /* LEFT_PARENTHESIS  */
+    RIGHT_PARENTHESIS = 285,       /* RIGHT_PARENTHESIS  */
+    PLUS = 286,                    /* PLUS  */
+    MINUS = 287,                   /* MINUS  */
+    COMMA = 288,                   /* COMMA  */
+    RETURN = 289                   /* RETURN  */
   };
   typedef enum yytokentype yytoken_kind_t;
 #endif
