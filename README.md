@@ -123,3 +123,6 @@ Para compilar o programa de testes é necessário ter o python instalado. Para r
 ```bash
 python3 compilator.py example.fut
 ```
+
+## Apresentação
+A apresentação da linguagem está disponível em pdf no arquivo FUTLanguagePresentation.pdf
